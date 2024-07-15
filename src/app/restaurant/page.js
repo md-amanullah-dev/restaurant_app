@@ -3,11 +3,14 @@
 import { useState } from "react";
 import Login from "../_components/restaurantLogin";
 import Signup from "../_components/restaurantSignup";
+import Header from "../_components/Header";
+import Footer from "../_components/Footer";
 
 const Restaurant = () => {
   const [login, setLogin] = useState(true);
   return (
     <>
+    <Header/>
     <div className="text-center">
       <h1 className="text-xl font-bold">Restaurant Login/Signup Page</h1>
       {login ? <Login /> : <Signup />}
@@ -17,6 +20,7 @@ const Restaurant = () => {
           : "Already have an account? Login"}
       </button>
       </div>
+      <Footer/>
     </>
   );
 };
