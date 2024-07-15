@@ -1,7 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Signup = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -11,29 +13,47 @@ const Signup = () => {
   const [address, setAddress] = useState("");
 
   const handleSignup = async () => {
-    console.log(email, phone, password, name);
+    if (password !== c_Password) {
+      alert("Passwords do not match!");
+      return;
+    }
 
-    let result = await fetch("http://localhost:3000/api/restaurant", {
-      method: "POST",
-      body: JSON.stringify({ email, phone, password, name, city, address }),
-    });
 
-    result = await result.json();
-    console.log("result", result);
+    try {
+      let response = await fetch("/api/restaurant", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, phone, password, name, city, address }),
+      });
+
+      response = await response.json();
+      if (response) {
+        console.log(response.message == "User created successfully");
+        const { user } = response;
+        delete user.password;
+
+        localStorage.setItem("restaurantUser", JSON.stringify(user));
+        router.push("/restaurant/dashboard");
+      } else {
+        alert(response.message);
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("Error during signup. Please try again.");
+    }
   };
-  useEffect(() => {
-    handleSignup();
-  }, []);
 
   return (
     <>
       <h3 className="text-18 font-bold">User Signup Page</h3>
-      <div className=" ">
+      <div>
         <div className="mt-4">
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="border border-gary-600 w-[300px] h-[30px] p-4 "
+            className="border border-gray-600 w-[300px] h-[30px] p-4"
             type="email"
             placeholder="Enter your Email"
           />
@@ -43,8 +63,8 @@ const Signup = () => {
           <input
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="border border-gary-600 w-[300px] h-[30px] p-4 "
-            type="phone"
+            className="border border-gray-600 w-[300px] h-[30px] p-4"
+            type="text"
             placeholder="Enter your Contact Number"
           />
         </div>
@@ -53,7 +73,7 @@ const Signup = () => {
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="border border-gary-600 w-[300px] h-[30px] p-4 "
+            className="border border-gray-600 w-[300px] h-[30px] p-4"
             type="password"
             placeholder="Enter your Password"
           />
@@ -63,8 +83,8 @@ const Signup = () => {
           <input
             value={c_Password}
             onChange={(e) => setC_Password(e.target.value)}
-            className="border border-gary-600 w-[300px] h-[30px] p-4 "
-            type="text"
+            className="border border-gray-600 w-[300px] h-[30px] p-4"
+            type="password"
             placeholder="Enter your Confirm Password"
           />
         </div>
@@ -73,9 +93,9 @@ const Signup = () => {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="border border-gary-600 w-[300px] h-[30px] p-4 "
+            className="border border-gray-600 w-[300px] h-[30px] p-4"
             type="text"
-            placeholder="Enter reataurant name"
+            placeholder="Enter restaurant name"
           />
         </div>
 
@@ -83,7 +103,7 @@ const Signup = () => {
           <input
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            className="border border-gary-600 w-[300px] h-[30px] p-4 "
+            className="border border-gray-600 w-[300px] h-[30px] p-4"
             type="text"
             placeholder="Enter city"
           />
@@ -93,7 +113,7 @@ const Signup = () => {
           <input
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="border border-gary-600 w-[300px] h-[30px] p-4 "
+            className="border border-gray-600 w-[300px] h-[30px] p-4"
             type="text"
             placeholder="Enter your full address"
           />
