@@ -1,4 +1,3 @@
-
 "use client";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -9,6 +8,7 @@ const Header = () => {
   const [details, setDetails] = useState(null);
   const router = useRouter();
   const pathName = usePathname();
+  
 
   useEffect(() => {
     let data = localStorage.getItem("restaurantUser");
@@ -59,4 +59,3 @@ const Header = () => {
 };
 
 export default Header;
-

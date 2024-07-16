@@ -1,6 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const router = useRouter();
@@ -11,13 +13,29 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSignup = async () => {
-    if (password !== c_Password) {
-      alert("Passwords do not match!");
+    if (
+      !email ||
+      !phone ||
+      !password ||
+      !c_Password ||
+      !name ||
+      !city ||
+      !address
+    ) {
+      toast.error("All fields are required");
       return;
     }
 
+    if (password !== c_Password) {
+      setPasswordError(true);
+      toast.error("Passwords do not match");
+      return;
+    } else {
+      setPasswordError(false);
+    }
 
     try {
       let response = await fetch("/api/restaurant", {
@@ -29,25 +47,24 @@ const Signup = () => {
       });
 
       response = await response.json();
-      if (response) {
-        console.log(response.message == "User created successfully");
+      if (response.success) {
         const { user } = response;
-        delete user.password;
-
         localStorage.setItem("restaurantUser", JSON.stringify(user));
         router.push("/restaurant/dashboard");
+        toast.success("Signup successful");
       } else {
-        alert(response.message);
+        toast.error(response.message);
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("Error during signup. Please try again.");
+      toast.error("Error during signup. Please try again.");
     }
   };
 
   return (
     <>
       <h3 className="text-18 font-bold">User Signup Page</h3>
+      <ToastContainer />
       <div>
         <div className="mt-4">
           <input
