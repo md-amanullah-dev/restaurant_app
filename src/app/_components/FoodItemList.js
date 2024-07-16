@@ -6,9 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 const FoodItemList = () => {
   const [foodItems, setFoodItems] = useState([]);
 
+
   const foodItemList = async () => {
+    const restaurantData = JSON.parse(localStorage.getItem("restaurantUser"));
+    const resto_id = restaurantData._id;
     let response = await fetch(
-      "http://localhost:3000/api/restaurant/foods/669616cf03f2b20d4e85606b"
+      `http://localhost:3000/api/restaurant/foods/${resto_id}`
     );
     response = await response.json();
     console.log(response);
@@ -20,6 +23,24 @@ const FoodItemList = () => {
     }
   };
 
+
+  const deleteFoodItem = async (id)=>{
+    let response = await fetch(`http://localhost:3000/api/restaurant/foods/${id}`,{
+        method:"DELETE"
+    }
+    
+    )
+    response = await response.json();
+    console.log("response",response)
+    if(response.success){
+        foodItemList()
+        toast.success("Food Item deleted")
+    }else{
+        toast.error("Food Item not deleted")
+
+    }
+  }
+
   useEffect(() => {
     foodItemList();
   }, []);
@@ -30,14 +51,14 @@ const FoodItemList = () => {
       <table className="border-2 border-solid border-black border-collapse ">
         <thead>
           <tr>
-            <td className="border-2 border-solid border-black  p-4">S.No</td>
-            <td className="border-2 border-solid border-black p-4">Name</td>
-            <td className="border-2 border-solid border-black p-4">Price</td>
-            <td className="border-2 border-solid border-black p-4">Image</td>
-            <td className="border-2 border-solid border-black p-4">
+            <td className="border-2 border-solid border-black p-2">S.No</td>
+            <td className="border-2 border-solid border-black p-2">Name</td>
+            <td className="border-2 border-solid border-black p-2">Price</td>
+            <td className="border-2 border-solid border-black p-2">
               Description
             </td>
-            <td className="border-2 border-solid border-black p-4">
+            <td className="border-2 border-solid border-black p-2">Image</td>
+            <td className="border-2 border-solid border-black p-2">
               Operations
             </td>
           </tr>
@@ -46,27 +67,28 @@ const FoodItemList = () => {
           {foodItems.map((item, key) => {
             return (
               <tr key={key}>
-                <td className="border-2 border-solid border-black p-4">
+                <td className="border-2 border-solid border-black p-2">
                   {key + 1}{" "}
                 </td>
-                <td className="border-2 border-solid border-black p-4">
+                <td className="border-2 border-solid border-black p-2">
                   {item.foodname}
                 </td>
-                <td className="border-2 border-solid border-black p-4">
+                <td className="border-2 border-solid border-black p-2">
                   {item.price}
                 </td>
-                <td className="border-2 border-solid border-black p-4">
+                <td className="border-2 border-solid border-black p-2">
+                  {item.description}
+                </td>
+                <td className="border-2 border-solid border-black p-2">
                   <img
                     className="w-24 h-18"
                     src={item.img_path}
                     alt="image path"
                   />
                 </td>
+                
                 <td className="border-2 border-solid border-black p-4">
-                  {item.description}
-                </td>
-                <td className="border-2 border-solid border-black p-4">
-                  <button className="w-16 bg-red-600 text-white font-semibold p-2 rounded-md">
+                  <button onClick={()=>deleteFoodItem(item._id)} className="w-16 bg-red-600 text-white font-semibold p-2 rounded-md">
                     Delete
                   </button>{" "}
                   <button className=" w-16 bg-green-400 text-white font-semibold p-2 rounded-md">

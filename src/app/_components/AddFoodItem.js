@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddFoodItem = () => {
+const AddFoodItem = ({setAddItem}) => {
   const [foodName, setFoodName] = useState("");
   const [price, setPrice] = useState("");
   const [path, setPath] = useState("");
@@ -51,6 +51,7 @@ const AddFoodItem = () => {
     const data = await response.json();
     if (data.success) {
       toast.success("Food added successfully");
+      setAddItem(false);
     } else {
       toast.error("Failed to add food item: " + data.message);
     }
