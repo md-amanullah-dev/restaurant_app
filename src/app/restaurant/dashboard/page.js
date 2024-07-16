@@ -1,6 +1,7 @@
 "use client";
 
 import AddFoodItem from "@/app/_components/AddFoodItem";
+import FoodItemList from "@/app/_components/FoodItemList";
 import Footer from "@/app/_components/Footer";
 import Header from "@/app/_components/Header";
 import { useState } from "react";
@@ -14,7 +15,7 @@ const Dashboard = () => {
 
       <button onClick={()=>setAddItem(true)}>Add Item</button>
       <button onClick={()=>setAddItem(false)}>Dashboard</button>
-      {addItem ? <AddFoodItem /> : <h1>Welcome to Dashboard page</h1>}
+      {addItem ? <AddFoodItem /> : <FoodItemList/>}
 
       <Footer />
     </>
