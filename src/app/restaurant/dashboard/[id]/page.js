@@ -1,15 +1,19 @@
-import { useState } from "react";
+"use client";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddFoodItem = ({ setAddItem }) => {
+const EditFoodItem = (props) => {
+  console.log("first", props);
   const [foodName, setFoodName] = useState("");
   const [price, setPrice] = useState("");
   const [path, setPath] = useState("");
   const [description, setDescription] = useState("");
+  const router = useRouter();
 
-  const handleAddFood = async () => {
+  const handleEditFood = async () => {
     console.log(foodName, price, path, description);
     if (!foodName) {
       toast.error("Please enter food name ");
@@ -28,39 +32,37 @@ const AddFoodItem = ({ setAddItem }) => {
       return;
     }
 
-    let resto_id;
-    const restaurantData = JSON.parse(localStorage.getItem("restaurantUser"));
-    if (restaurantData) {
-      resto_id = restaurantData._id;
-    }
-
-    const response = await fetch("http://localhost:3000/api/restaurant/foods", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        foodname: foodName,
-        price: Number(price), 
-        img_path: path,
-        description,
-        resto_id,
-      }),
-    });
-
     const data = await response.json();
     if (data.success) {
-      toast.success("Food added successfully");
+      toast.success("Food Edit successfully");
       setAddItem(false);
     } else {
-      toast.error("Failed to add food item: " + data.message);
+      toast.error("Failed to edit food item: " + data.message);
     }
   };
+
+  const handleFoodList = async () => {
+    let response = await fetch(
+      `http://localhost:3000/api/restaurant/foods/edit/${props.params.id}`
+    );
+    response = await response.json();
+    if (response.success) {
+      console.log(response.result);
+      setFoodName(response.result.foodname);
+      setPrice(response.result.price);
+      setPath(response.result.img_path);
+      setDescription(response.result.description);
+    }
+  };
+
+  useEffect(() => {
+    handleFoodList();
+  }, []);
 
   return (
     <div className="text-center">
       <ToastContainer />
-      <h1 className="text-xl font-bold">Add New Food Item</h1>
+      <h1 className="text-xl font-bold">Update Food Item</h1>
 
       <div className="mt-4">
         <input
@@ -104,13 +106,22 @@ const AddFoodItem = ({ setAddItem }) => {
       <div className="mt-2">
         <button
           className="bg-green-700 text-white font-bold text-xl rounded-sm w-[300px] h-[40px] p-2"
-          onClick={handleAddFood}
+          onClick={handleEditFood}
         >
-          Add Food
+          Update Food
+        </button>
+      </div>
+
+      <div className="mt-2">
+        <button
+          className="bg-green-700 text-white font-bold text-xl rounded-sm w-[300px] h-[40px] p-2"
+          onClick={() => router.push(`/restaurant/dashboard/`)}
+        >
+          Back to Food List
         </button>
       </div>
     </div>
   );
 };
 
-export default AddFoodItem;
+export default EditFoodItem;

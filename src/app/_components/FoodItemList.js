@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -5,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const FoodItemList = () => {
   const [foodItems, setFoodItems] = useState([]);
+  const router = useRouter();
 
 
   const foodItemList = async () => {
@@ -91,7 +93,7 @@ const FoodItemList = () => {
                   <button onClick={()=>deleteFoodItem(item._id)} className="w-16 bg-red-600 text-white font-semibold p-2 rounded-md">
                     Delete
                   </button>{" "}
-                  <button className=" w-16 bg-green-400 text-white font-semibold p-2 rounded-md">
+                  <button onClick={()=>router.push(`/restaurant/dashboard/${item._id}`)} className=" w-16 bg-green-400 text-white font-semibold p-2 rounded-md">
                     Edit
                   </button>
                 </td>
