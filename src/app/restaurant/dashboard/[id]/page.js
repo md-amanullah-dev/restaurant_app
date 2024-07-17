@@ -14,7 +14,6 @@ const EditFoodItem = (props) => {
   const router = useRouter();
 
   const handleEditFood = async () => {
-    console.log(foodName, price, path, description);
     if (!foodName) {
       toast.error("Please enter food name ");
       return;
@@ -32,12 +31,22 @@ const EditFoodItem = (props) => {
       return;
     }
 
-    const data = await response.json();
-    if (data.success) {
-      toast.success("Food Edit successfully");
-      setAddItem(false);
+    console.log(foodName, price, path, description);
+
+    let response = await fetch(
+      `http://localhost:3000/api/restaurant/foods/edit/${props.params.id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ foodName, price, img_path: path, description }),
+      }
+    );
+
+    response = await response.json();
+    if (response.success) {
+      toast.success("Food Updated successfully");
+      router.push(`/restaurant/dashboard/`)
     } else {
-      toast.error("Failed to edit food item: " + data.message);
+      toast.error("Failed to Updated food item: " + data.message);
     }
   };
 
