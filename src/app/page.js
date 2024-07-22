@@ -2,12 +2,15 @@
 import { useEffect, useState } from "react";
 import CustomerHeader from "./_components/CustomerHeader";
 import Footer from "./_components/Footer";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [location, setLocation] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [showLocation, setShowLocation] = useState(false);
   const [restaurant, setRestaurant] = useState([]);
+
+  const router = useRouter();
   const loadLocations = async () => {
     let response = await fetch("http://localhost:3000/api/customer/locations");
     response = await response.json();
@@ -79,7 +82,7 @@ export default function Home() {
       </div>
       <div className="flex flex-wrap justify-center ">
         {restaurant.map((item) => (
-          <div className="mt-4 border  border-balck bg-sky-500 h-auto w-[500px] ml-3 pb-3 p-2 rounded-lg ">
+          <div onClick={()=>router.push('explore/'+item.name)} className="mt-4 border  border-balck bg-sky-500 h-auto w-[500px] ml-3 pb-3 p-2 rounded-lg ">
             <h3 className="text-center font-bold text-2xl">{item.name} </h3>
             <p className=" ">Contact:{item.phone} </p>
 
