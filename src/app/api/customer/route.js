@@ -1,7 +1,5 @@
 import connectDB from "@/app/lib/db";
-import Food from "@/app/lib/models/foods";
 import User from "@/app/lib/models/user";
-
 const { NextResponse } = require("next/server");
 
 export const GET = async (request, response) => {

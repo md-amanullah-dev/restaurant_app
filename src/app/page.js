@@ -7,23 +7,39 @@ export default function Home() {
   const [location, setLocation] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [showLocation, setShowLocation] = useState(false);
+  const [restaurant, setRestaurant] = useState([]);
   const loadLocations = async () => {
     let response = await fetch("http://localhost:3000/api/customer/locations");
     response = await response.json();
-    console.log("response", response);
 
     if (response.success) {
       setLocation(response.result);
     }
   };
 
+  const loadRestaurantList = async (params) => {
+    let url = "http://localhost:3000/api/customer";
+    if (params?.location) {
+      url = url + "?location=" + params.location;
+    } else if (params?.restaurant) {
+      url = url + "?restaurant=" + params.restaurant;
+    }
+    let response = await fetch(url);
+    response = await response.json();
+    if (response.success) {
+      setRestaurant(response.result);
+    }
+  };
+
   useEffect(() => {
     loadLocations();
+    loadRestaurantList();
   }, []);
 
   const handleListItem = (city) => {
     setSelectedLocation(city);
     setShowLocation(false);
+    loadRestaurantList({ location: city });
   };
 
   return (
@@ -54,11 +70,26 @@ export default function Home() {
               ))}
           </ul>
           <input
-            className="h-[40px] border-none w-[65%] pl-4 "
+            className="h-[40px] border-none w-[65%] pl-4 text-black "
             type="text"
             placeholder="Enter Food or Resturant Name "
+            onClick={(e) => loadRestaurantList({ restaurant: e.target.value })}
           />
         </div>
+      </div>
+      <div className="flex flex-wrap justify-center ">
+        {restaurant.map((item) => (
+          <div className="mt-4 border  border-balck bg-sky-500 h-auto w-[500px] ml-3 pb-3 p-2 rounded-lg ">
+            <h3 className="text-center font-bold text-2xl">{item.name} </h3>
+            <p className=" ">Contact:{item.phone} </p>
+
+            <p>City:{item.city} </p>
+            <p>
+              Address:{item.address} email: {item.email}{" "}
+            </p>
+            <p>email: {item.email} </p>
+          </div>
+        ))}
       </div>
       <Footer />
     </main>
