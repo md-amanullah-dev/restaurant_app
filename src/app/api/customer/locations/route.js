@@ -12,7 +12,7 @@ export const  GET = async (request,response)=>{
 
     return NextResponse.json({
         success:true,
-        result:result,
+        result,
         message:"Get location data "
     })
 }
