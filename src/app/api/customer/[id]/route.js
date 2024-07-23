@@ -9,11 +9,12 @@ export const GET = async (request, response) => {
   connectDB();
 
   const result = await User.findOne({ _id: id });
-  const foodItem = await Food.findOne({ resto_id: id });
+  const food = await Food.find({ resto_id: id });
+
   return NextResponse.json({
     success: true,
     result,
-    foodItem,
+    food,
     message: "Get Restaurant details",
   });
 };

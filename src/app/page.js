@@ -82,13 +82,13 @@ export default function Home() {
       </div>
       <div className="flex flex-wrap justify-center ">
         {restaurant.map((item) => (
-          <div onClick={()=>router.push('explore/'+item.name)} className="mt-4 border  border-balck bg-sky-500 h-auto w-[500px] ml-3 pb-3 p-2 rounded-lg ">
+          <div onClick={()=>router.push('explore/'+item.name+"?id="+item._id)} className="mt-4 border  border-balck bg-sky-500 h-auto w-[500px] ml-3 pb-3 p-2 rounded-lg ">
             <h3 className="text-center font-bold text-2xl">{item.name} </h3>
             <p className=" ">Contact:{item.phone} </p>
 
             <p>City:{item.city} </p>
             <p>
-              Address:{item.address} email: {item.email}{" "}
+              Address:{item.address} 
             </p>
             <p>email: {item.email} </p>
           </div>
