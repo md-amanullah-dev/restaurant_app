@@ -8,9 +8,11 @@ const page = (props) => {
   let name = props.params.name;
   const [restaurantDetail, setRestaurantDetail] = useState();
   const [foodItem, setFoodItem] = useState([]);
+  const [cartData, setcartData] = useState();
 
   const loadRestaurantDetail = async () => {
     const id = props.searchParams.id;
+    
 
     let response = await fetch(`http://localhost:3000/api/customer/${id}`);
 
@@ -21,12 +23,16 @@ const page = (props) => {
     }
   };
 
+  const addTocart = (item)=>{
+    setcartData(item)
+  }
+
   useEffect(() => {
     loadRestaurantDetail();
   }, []);
   return (
     <div>
-      <CustomerHeader />
+      <CustomerHeader cartData = {cartData} />
       <div className="main-page bg-[url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb')] object-cover h-[330px] w-full bg-no-repeat outline-none p-8 text-white      ">
         <h1 className="font-bold text-[65px] text-center pb-7 text-white ">
           {decodeURI(name)}
@@ -54,7 +60,7 @@ const page = (props) => {
                 <p>{item.foodname}</p>
                 <p>{item.price}</p>
                 <p className="font-light">{item.description}</p>
-                <button className="rounded-md p-3 bg-green-600 text-white font-bold">
+                <button onClick={()=>addTocart(item)} className="rounded-md p-3 bg-green-600 text-white font-bold">
                   Add to Cart
                 </button>
               </div>
