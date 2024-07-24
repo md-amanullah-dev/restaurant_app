@@ -31,6 +31,21 @@ const CustomerHeader = (props) => {
       }
     }
   }, [props.cartData]);
+
+  useEffect(() => {
+    if (props.removeCartData) {
+      let localCartItem = cartItem.filter((item) => {
+        return item._id != props.removeCartData;
+      });
+      setCartItem(localCartItem);
+      setCartNumber(cartItem - 1);
+      localStorage.setItem("cart", JSON.stringify(localCartItem));
+
+      if (localCartItem.length == 0) {
+        localStorage.removeItem("cart");
+      }
+    }
+  }, [props.removeCartData]);
   return (
     <>
       <div className="bg-gray-600 flex items-center">
