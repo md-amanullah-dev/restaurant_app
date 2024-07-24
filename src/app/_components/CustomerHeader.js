@@ -64,7 +64,7 @@ const CustomerHeader = (props) => {
           </li>
 
           <li className="ml-5 font-bold text-white text-18">
-            <Link href="/login">Cart({cartNumber ? cartNumber : 0})</Link>
+            <Link href={cartNumber?"/cart":"#"}>Cart({cartNumber ? cartNumber : 0})</Link>
           </li>
 
           <li className="ml-5 font-bold text-white text-18">
