@@ -31,7 +31,7 @@ const UserSignup = () => {
 
   return (
     <div>
-      <h1>User signUp page</h1>
+      <h1 className="font-bold text-xl mt-2">User signUp page</h1>
       <div className="mt-4">
         <input
           className="border border-gray-600 rounded-md w-[300px] h-[30px] p-4"
