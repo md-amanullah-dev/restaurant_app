@@ -82,7 +82,7 @@ const CustomerHeader = (props) => {
           ) : (
             <>
               <li className="ml-5 font-bold text-white text-18">
-                <Link href="/login">Login</Link>
+                <Link href="http://localhost:3000/user-auth">Login</Link>
               </li>
 
               <li className="ml-5 font-bold text-white text-18">

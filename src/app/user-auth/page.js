@@ -16,7 +16,9 @@ const page = () => {
         login?<UserLogin/>:<UserSignup />
       }
       
-        
+        <button className="text-blue-400 font-semibold" onClick={()=>setLogin(!login)}>
+          {login?"Do not have an Account? Signup":"Already have an Account? Login"}
+        </button>
       </div>
       <Footer />
     </>
