@@ -12,7 +12,7 @@ const UserSignup = () => {
   const [address, setAddress] = useState("");
   const router = useRouter();
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (props) => {
     let response = await fetch("http://localhost:3000/api/user", {
       method: "POST",
       body: JSON.stringify({ name, email, phone, password, city, address }),
@@ -23,7 +23,13 @@ const UserSignup = () => {
       delete result.password;
       localStorage.setItem("user", JSON.stringify(result));
       alert("signup successfully done");
-      router.push('http://localhost:3000/');
+      if(props?.redirect?.order){
+        router.push("http://localhost:3000/order");
+
+      }else{
+
+        router.push("http://localhost:3000/");
+      }
     } else {
       alert(" failed ");
     }

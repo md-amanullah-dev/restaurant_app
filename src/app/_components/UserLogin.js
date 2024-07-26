@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const UserLogin = () => {
+const UserLogin = (props) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const router = useRouter();
@@ -19,7 +19,14 @@ const UserLogin = () => {
       const result = response.result;
       delete result.password;
       localStorage.setItem("user", JSON.stringify(result));
-      router.push("http://localhost:3000/");
+
+      if(props?.redirect?.order){
+        router.push("http://localhost:3000/order");
+
+      }else{
+
+        router.push("http://localhost:3000/");
+      }
     } else {
       alert("Failed to login. Please try again with valid email and password ");
     }

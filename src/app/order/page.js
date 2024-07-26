@@ -22,7 +22,6 @@ const page = () => {
         })
   );
 
-  console.log(total);
 
   return (
     <div>

@@ -5,7 +5,7 @@ import Footer from "../_components/Footer";
 import UserLogin from "../_components/UserLogin";
 import UserSignup from "../_components/UserSignup";
 
-const page = () => {
+const page = (props) => {
 
   const [login, setLogin] = useState(true)
   return (
@@ -13,7 +13,7 @@ const page = () => {
       <CustomerHeader />
       <div className="text-center">
       {
-        login?<UserLogin/>:<UserSignup />
+        login?<UserLogin redirect ={props.searchParams} />:<UserSignup redirect ={props.searchParams} />
       }
       
         <button className="text-blue-400 font-semibold" onClick={()=>setLogin(!login)}>

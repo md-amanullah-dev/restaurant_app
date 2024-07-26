@@ -23,7 +23,12 @@ const page = () => {
 const router = useRouter();
 
 const orderNow =()=>{
-  router.push('http://localhost:3000/order')
+  if(JSON.parse(localStorage.getItem("user"))){
+    router.push('http://localhost:3000/order')
+
+  }else{
+    router.push('http://localhost:3000/user-auth?order=true')
+  }
 }
 
   return (
