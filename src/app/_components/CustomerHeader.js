@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdDeliveryDining } from "react-icons/md";
 
@@ -8,6 +9,12 @@ const CustomerHeader = (props) => {
   const cartStorage = JSON.parse(localStorage.getItem("cart"));
   const [cartNumber, setCartNumber] = useState(cartStorage?.length);
   const [cartItem, setCartItem] = useState(cartStorage);
+
+  const userStorage = localStorage.getItem("user");
+  const parsedUser = userStorage ? JSON.parse(userStorage) : undefined;
+  const [user, setUser] = useState(parsedUser);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (props.cartData) {
@@ -46,6 +53,13 @@ const CustomerHeader = (props) => {
       }
     }
   }, [props.removeCartData]);
+
+
+  const logout = ()=>{
+    localStorage.removeItem('user');
+
+  router.push("/user-auth")
+  }
   return (
     <>
       <div className="bg-gray-600 flex items-center">
@@ -54,17 +68,33 @@ const CustomerHeader = (props) => {
           <li className="font-bold text-white text-18">
             <Link href="/">Home</Link>
           </li>
+          {user ? (
+            <>
+              <li className=" ml-5 font-bold text-white text-18">
+                <Link href="/#">{user?.name}</Link>
+              </li>
+              <li>
+                <button onClick={logout} className="ml-5 font-bold text-white text-18">
+                  Logout
+                </button>{" "}
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="ml-5 font-bold text-white text-18">
+                <Link href="/login">Login</Link>
+              </li>
+
+              <li className="ml-5 font-bold text-white text-18">
+                <Link href="/user-auth">Signup</Link>
+              </li>
+            </>
+          )}
 
           <li className="ml-5 font-bold text-white text-18">
-            <Link href="/login">Login</Link>
-          </li>
-
-          <li className="ml-5 font-bold text-white text-18">
-            <Link href="/login">Signup</Link>
-          </li>
-
-          <li className="ml-5 font-bold text-white text-18">
-            <Link href={cartNumber?"/cart":"#"}>Cart({cartNumber ? cartNumber : 0})</Link>
+            <Link href={cartNumber ? "/cart" : "#"}>
+              Cart({cartNumber ? cartNumber : 0})
+            </Link>
           </li>
 
           <li className="ml-5 font-bold text-white text-18">

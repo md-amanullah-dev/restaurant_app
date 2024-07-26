@@ -1,5 +1,5 @@
 import connectDB from "@/app/lib/db";
-import User from "@/app/lib/models/user";
+import User from "@/app/lib/models/restaurant";
 const { NextResponse } = require("next/server");
 
 export const GET = async (request, response) => {
